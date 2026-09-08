@@ -12,6 +12,7 @@ pub(crate) struct CasbinRule {
     pub v3: String,
     pub v4: String,
     pub v5: String,
+    pub v6: String,
 }
 
 #[allow(dead_code)]
@@ -26,6 +27,7 @@ pub(crate) struct CasbinRule {
     pub v3: String,
     pub v4: String,
     pub v5: String,
+    pub v6: String,
 }
 
 #[derive(Debug)]
@@ -37,4 +39,5 @@ pub(crate) struct NewCasbinRule<'a> {
     pub v3: &'a str,
     pub v4: &'a str,
     pub v5: &'a str,
+    pub v6: &'a str,
 }

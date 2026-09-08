@@ -39,7 +39,8 @@ mod sql {
                     v3 VARCHAR NOT NULL,
                     v4 VARCHAR NOT NULL,
                     v5 VARCHAR NOT NULL,
-                    CONSTRAINT unique_key_sqlx_adapter UNIQUE(ptype, v0, v1, v2, v3, v4, v5)
+                    v6 VARCHAR NOT NULL,
+                    CONSTRAINT unique_key_sqlx_adapter UNIQUE(ptype, v0, v1, v2, v3, v4, v5, v6)
                     );";
 
     pub(super) const REMOVE_POLICY: &str = "DELETE FROM casbin_rule WHERE
@@ -49,7 +50,8 @@ mod sql {
                     v2 = $4 AND
                     v3 = $5 AND
                     v4 = $6 AND
-                    v5 = $7";
+                    v5 = $7 AND
+                    v6 = $8";
 
     /// Indexed by `field_index`: entry `i` binds `ptype` plus `6 - i` values.
     pub(super) const REMOVE_FILTERED_POLICY: [&str; 6] = [
@@ -60,7 +62,8 @@ mod sql {
                     (v2 is NULL OR v2 = COALESCE($4,v2)) AND
                     (v3 is NULL OR v3 = COALESCE($5,v3)) AND
                     (v4 is NULL OR v4 = COALESCE($6,v4)) AND
-                    (v5 is NULL OR v5 = COALESCE($7,v5))",
+                    (v5 is NULL OR v5 = COALESCE($7,v5)) AND
+                    (v6 is NULL OR v6 = COALESCE($8,v6))",
         "DELETE FROM casbin_rule WHERE
                     ptype = $1 AND
                     (v1 is NULL OR v1 = COALESCE($2,v1)) AND
@@ -89,7 +92,7 @@ mod sql {
     ];
 
     pub(super) const LOAD_POLICY: &str =
-        "SELECT id, ptype, v0, v1, v2, v3, v4, v5 FROM casbin_rule";
+        "SELECT id, ptype, v0, v1, v2, v3, v4, v5, v6 FROM casbin_rule";
 
     pub(super) const LOAD_FILTERED_POLICY: &str =
         "SELECT id, ptype, v0, v1, v2, v3, v4, v5 FROM casbin_rule WHERE (
@@ -97,8 +100,8 @@ mod sql {
         OR (
             ptype LIKE 'p%' AND v0 LIKE $7 AND v1 LIKE $8 AND v2 LIKE $9 AND v3 LIKE $10 AND v4 LIKE $11 AND v5 LIKE $12 )";
 
-    pub(super) const ADD_POLICY: &str = "INSERT INTO casbin_rule ( ptype, v0, v1, v2, v3, v4, v5 )
-                 VALUES ( $1, $2, $3, $4, $5, $6, $7 )";
+    pub(super) const ADD_POLICY: &str = "INSERT INTO casbin_rule ( ptype, v0, v1, v2, v3, v4, v5, v6)
+                 VALUES ( $1, $2, $3, $4, $5, $6, $7, $8 )";
 
     pub(super) const CLEAR_POLICY: &str = "DELETE FROM casbin_rule";
 }
@@ -114,8 +117,9 @@ mod sql {
                     v3 VARCHAR(128) NOT NULL,
                     v4 VARCHAR(128) NOT NULL,
                     v5 VARCHAR(128) NOT NULL,
+                    v6 VARCHAR(128) NOT NULL,
                     PRIMARY KEY(id),
-                    CONSTRAINT unique_key_sqlx_adapter UNIQUE(ptype, v0, v1, v2, v3, v4, v5)
+                    CONSTRAINT unique_key_sqlx_adapter UNIQUE(ptype, v0, v1, v2, v3, v4, v5, v6)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
     pub(super) const REMOVE_POLICY: &str = "DELETE FROM casbin_rule WHERE
@@ -165,7 +169,7 @@ mod sql {
     ];
 
     pub(super) const LOAD_POLICY: &str =
-        "SELECT id, ptype, v0, v1, v2, v3, v4, v5 FROM casbin_rule";
+        "SELECT id, ptype, v0, v1, v2, v3, v4, v5, v6 FROM casbin_rule";
 
     pub(super) const LOAD_FILTERED_POLICY: &str =
         "SELECT id, ptype, v0, v1, v2, v3, v4, v5 FROM casbin_rule WHERE (
@@ -173,8 +177,8 @@ mod sql {
         OR (
             ptype LIKE 'p%' AND v0 LIKE ? AND v1 LIKE ? AND v2 LIKE ? AND v3 LIKE ? AND v4 LIKE ? AND v5 LIKE ? )";
 
-    pub(super) const ADD_POLICY: &str = "INSERT INTO casbin_rule ( ptype, v0, v1, v2, v3, v4, v5 )
-                 VALUES ( ?, ?, ?, ?, ?, ?, ? )";
+    pub(super) const ADD_POLICY: &str = "INSERT INTO casbin_rule ( ptype, v0, v1, v2, v3, v4, v5, v6 )
+                 VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )";
 
     pub(super) const CLEAR_POLICY: &str = "DELETE FROM casbin_rule";
 }
@@ -193,7 +197,8 @@ mod sql {
                     v3 VARCHAR(128) NOT NULL,
                     v4 VARCHAR(128) NOT NULL,
                     v5 VARCHAR(128) NOT NULL,
-                    CONSTRAINT unique_key_sqlx_adapter UNIQUE(ptype, v0, v1, v2, v3, v4, v5)
+                    v6 VARCHAR(128) NOT NULL,
+                    CONSTRAINT unique_key_sqlx_adapter UNIQUE(ptype, v0, v1, v2, v3, v4, v5, v6)
                     );";
 
     pub(super) const REMOVE_POLICY: &str = "DELETE FROM casbin_rule WHERE
@@ -243,7 +248,7 @@ mod sql {
     ];
 
     pub(super) const LOAD_POLICY: &str =
-        "SELECT id, ptype, v0, v1, v2, v3, v4, v5 FROM casbin_rule";
+        "SELECT id, ptype, v0, v1, v2, v3, v4, v5, v6 FROM casbin_rule";
 
     pub(super) const LOAD_FILTERED_POLICY: &str =
         "SELECT id, ptype, v0, v1, v2, v3, v4, v5 FROM casbin_rule WHERE (
@@ -251,8 +256,8 @@ mod sql {
         OR (
             ptype LIKE 'p%' AND v0 LIKE ? AND v1 LIKE ? AND v2 LIKE ? AND v3 LIKE ? AND v4 LIKE ? AND v5 LIKE ? )";
 
-    pub(super) const ADD_POLICY: &str = "INSERT INTO casbin_rule ( ptype, v0, v1, v2, v3, v4, v5 )
-                 VALUES ( ?, ?, ?, ?, ?, ?, ? )";
+    pub(super) const ADD_POLICY: &str = "INSERT INTO casbin_rule ( ptype, v0, v1, v2, v3, v4, v5, v6 )
+                 VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )";
 
     pub(super) const CLEAR_POLICY: &str = "DELETE FROM casbin_rule";
 }
@@ -278,6 +283,7 @@ pub async fn remove_policy(conn: &ConnectionPool, pt: &str, rule: Vec<String>) -
         .bind(rule[3].as_str())
         .bind(rule[4].as_str())
         .bind(rule[5].as_str())
+        .bind(rule[6].as_str())
         .execute(conn)
         .await
         .map(|n| n.rows_affected() == 1)
@@ -300,6 +306,7 @@ pub async fn remove_policies(
             .bind(rule[3].as_str())
             .bind(rule[4].as_str())
             .bind(rule[5].as_str())
+            .bind(rule[6].as_str())
             .execute(&mut *transaction)
             .await
             .and_then(|n| {
@@ -395,6 +402,7 @@ pub(crate) async fn save_policy(
             .bind(rule.v3)
             .bind(rule.v4)
             .bind(rule.v5)
+            .bind(rule.v6)
             .execute(&mut *transaction)
             .await
             .and_then(|n| {
@@ -419,6 +427,7 @@ pub(crate) async fn add_policy(conn: &ConnectionPool, rule: NewCasbinRule<'_>) -
         .bind(rule.v3)
         .bind(rule.v4)
         .bind(rule.v5)
+        .bind(rule.v6)
         .execute(conn)
         .await
         .map(|n| n.rows_affected() == 1)
@@ -441,6 +450,7 @@ pub(crate) async fn add_policies(
             .bind(rule.v3)
             .bind(rule.v4)
             .bind(rule.v5)
+            .bind(rule.v6)
             .execute(&mut *transaction)
             .await
             .and_then(|n| {

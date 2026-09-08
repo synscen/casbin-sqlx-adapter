@@ -77,6 +77,7 @@ impl<'a> SqlxAdapter {
             v3: "",
             v4: "",
             v5: "",
+            v6: "",
         };
 
         new_rule.v0 = &rule[0];
@@ -101,6 +102,10 @@ impl<'a> SqlxAdapter {
             new_rule.v5 = &rule[5];
         }
 
+        if rule.len() > 6 {
+            new_rule.v6 = &rule[6];
+        }
+
         Some(new_rule)
     }
 
@@ -120,6 +125,7 @@ impl<'a> SqlxAdapter {
             &casbin_rule.v3,
             &casbin_rule.v4,
             &casbin_rule.v5,
+            &casbin_rule.v6,
         ];
 
         while let Some(last) = result.last() {
